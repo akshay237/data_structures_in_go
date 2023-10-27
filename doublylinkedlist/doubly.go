@@ -155,6 +155,100 @@ func (o *LinkedList) insertAfterNode(data, key int) {
 
 }
 
+// delete from first
+func (o *LinkedList) deleteAtFirst() {
+
+	if o.head == nil {
+		fmt.Println("Linked List is empty")
+		return
+	}
+
+	o.head = o.head.right
+	o.head.left = nil
+	fmt.Println("Deleted Node is: ", o.head.val)
+	return
+}
+
+// delete from end
+func (o *LinkedList) deleteAtEnd() {
+
+	if o.head == nil {
+		fmt.Println("linked list is empty")
+		return
+	}
+
+	var prev *Node
+	curr := o.head
+	for curr.right != nil {
+		prev = curr
+		curr = curr.right
+	}
+
+	prev.right = nil
+	fmt.Println("Deleted Node is: ", curr.val)
+	return
+}
+
+// delete specific node in list
+func (o *LinkedList) deleteGivenNode(data int) {
+
+	// 1. Check if the list is empty
+	if o.head == nil {
+		fmt.Println("Linked list is empty")
+		return
+	}
+
+	// 2. if the node to be deleted is head node
+	if o.head.val == data {
+		o.deleteAtFirst()
+		return
+	}
+
+	// 3. traverse the list to find the node
+	var prev *Node
+	curr := o.head
+	for curr.right != nil && curr.val != data {
+		prev = curr
+		curr = curr.right
+	}
+
+	// 4. if the node to be deleted is last node
+	if curr.right == nil {
+		if curr.val == data {
+			o.deleteAtEnd()
+			return
+		} else {
+			fmt.Println("Node is not present in the list")
+			return
+		}
+	}
+
+	// 5. delete the node from other positions
+	prev.right = curr.right
+	curr.right.left = prev
+	fmt.Println("Deleted node is: ", curr.val)
+	return
+}
+
+// search the node in the list
+func (o *LinkedList) searchNode(key int) bool {
+	if o.head == nil {
+		fmt.Println("Link list is empty, so node is not present")
+		return false
+	}
+
+	curr := o.head
+	for curr.right != nil && curr.val != key {
+		curr = curr.right
+	}
+
+	if curr.val == key {
+		return true
+	}
+
+	return false
+}
+
 func main() {
 	dll := &LinkedList{head: nil}
 	dll.insertAtFirst(5)
@@ -169,4 +263,12 @@ func main() {
 	dll.insertAfterNode(13, 11)
 	dll.insertAfterNode(8, 7)
 	dll.printList()
+	dll.deleteAtFirst()
+	dll.printList()
+	dll.deleteAtEnd()
+	dll.printList()
+	dll.deleteGivenNode(11)
+	dll.printList()
+	isok := dll.searchNode(9)
+	fmt.Println("Node exist: ", isok)
 }
