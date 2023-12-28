@@ -99,10 +99,79 @@ func NGR(arr []int) []int {
 	return ans
 }
 
+// 2. find Next Greater Element from left
+func NGL(arr []int) []int {
+	stack := make([]int, 0)
+	ans := make([]int, 0)
+	for i := 0; i < len(arr); i++ {
+		for len(stack) > 0 && stack[len(stack)-1] < arr[i] {
+			idx := len(stack) - 1
+			stack = slices.Delete(stack, idx, idx+1)
+		}
+		if len(stack) == 0 {
+			ans = append(ans, -1)
+		} else {
+			ans = append(ans, stack[len(stack)-1])
+		}
+		stack = append(stack, arr[i])
+	}
+	return ans
+}
+
+// 3.find next smallest element from right
+func NSR(arr []int) []int {
+	stack := make([]int, 0)
+	ans := make([]int, len(arr))
+	for i := len(arr) - 1; i >= 0; i-- {
+		for len(stack) > 0 && stack[len(stack)-1] > arr[i] {
+			idx := len(stack) - 1
+			stack = slices.Delete(stack, idx, idx+1)
+		}
+		if len(stack) == 0 {
+			ans[i] = -1
+		} else {
+			ans[i] = stack[len(stack)-1]
+		}
+		stack = append(stack, arr[i])
+	}
+	return ans
+}
+
+// 4. find next smallest element from the left
+func NSL(arr []int) []int {
+	stack := make([]int, 0)
+	ans := make([]int, 0)
+	for i := 0; i < len(arr); i++ {
+		for len(stack) > 0 && stack[len(stack)-1] > arr[i] {
+			idx := len(stack) - 1
+			stack = slices.Delete(stack, idx, idx+1)
+		}
+		if len(stack) == 0 {
+			ans = append(ans, -1)
+		} else {
+			ans = append(ans, stack[len(stack)-1])
+		}
+		stack = append(stack, arr[i])
+	}
+	return ans
+}
+
 func main() {
 
-	//1. find NGR of an array
+	// 1. find NGR of an array
 	arr := []int{1, 3, 2, 4}
 	ngr := NGR(arr)
 	fmt.Println("NGR of arr is:", ngr)
+
+	// 2. find ngl of an array
+	ngl := NGL(arr)
+	fmt.Println("NGL of arr is:", ngl)
+
+	// 3. find the NSR of an array
+	nsr := NSR(arr)
+	fmt.Println("NSR of arr is:", nsr)
+
+	// 4. find the NSL of an array
+	nsl := NSL(arr)
+	fmt.Println("NSL of arr is:", nsl)
 }
