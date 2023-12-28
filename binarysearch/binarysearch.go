@@ -143,6 +143,49 @@ func searchInInfiniteArray(arr []int, key int) int {
 	return BinarySearch(arr, start, end, key)
 }
 
+func peakElement(arr []int, start, end int) int { // peak element greater than from both left and right side element
+	for start <= end {
+		mid := start + (end-start)/2
+		if mid > 0 && mid < len(arr)-1 {
+			if arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1] {
+				return mid
+			} else if arr[mid] > arr[mid-1] {
+				start = mid + 1
+			} else if arr[mid] > arr[mid+1] {
+				end = mid - 1
+			}
+		} else if mid == 0 {
+			if arr[0] > arr[1] {
+				return 0
+			} else {
+				return 1
+			}
+		} else if mid == len(arr)-1 {
+			if arr[len(arr)-1] > arr[len(arr)-2] {
+				return len(arr) - 1
+			} else {
+				return len(arr) - 2
+			}
+		}
+	}
+	return -1
+}
+
+func searchInMatrix(mat [][]int, rows, cols, key int) (int, int) {
+	i := 0
+	j := cols - 1
+	for i >= 0 && i < rows && j >= 0 && j < cols {
+		if mat[i][j] == key {
+			return i, j
+		} else if mat[i][j] > key {
+			j = j - 1
+		} else if mat[i][j] < key {
+			i = i + 1
+		}
+	}
+	return -1, -1
+}
+
 func main() {
 
 	// 1. Binary Search
@@ -232,4 +275,30 @@ func main() {
 	arr = []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1}
 	pos = searchInInfiniteArray(arr, 1)
 	fmt.Println("Position of element is:", pos)
+
+	// 14. find peak element in the array or max in Biotonic Array (biotonic - strictly increasing and strictly decreasing)
+	arr = []int{10, 20, 30, 40, 48, 57, 66, 9, 5, 3, 2, 1}
+	peakPos := peakElement(arr, 0, len(arr)-1)
+	fmt.Println("Peak element position is:", peakPos)
+
+	// 15. search in biotonic array, after getting peak element apply BS and BSinDesc to get the position
+	arr = []int{10, 20, 30, 40, 48, 57, 66, 9, 5, 3, 2, 1}
+	key = 3
+	pos1 = BinarySearch(arr, 0, peakPos, key)
+	pos2 = BinarySearchInDesc(arr, peakPos+1, len(arr)-1, key)
+	if pos1 == -1 && pos2 == -1 {
+		fmt.Println("Key not exist in the biotonic array")
+	} else if pos1 != -1 && pos2 == -1 {
+		fmt.Println("Key in biotonic array is present at the position", pos1)
+	} else if pos1 == -1 && pos2 != -1 {
+		fmt.Println("Key in biotonic array is present at the position", pos2)
+	}
+
+	// 16. search in a row wise and column wise sorted matrix
+	mat := [][]int{{10, 20, 30, 40}, {15, 25, 35, 45}, {27, 29, 37, 48}, {32, 33, 39, 50}}
+	key = 29
+	rows := len(mat) - 1
+	cols := len(mat[0])
+	i, j := searchInMatrix(mat, rows, cols, key)
+	fmt.Println("Key present at index in mat[", i, "][", j, "]")
 }
