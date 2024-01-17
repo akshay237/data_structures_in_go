@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "/home/akshayb/akki/Data_Structures_in_Go/doublylinkedlist"
+            "program": "/home/akshayb/akki/Data_Structures_in_Go/slidingwindow"
         }
     ]
 }
