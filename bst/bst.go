@@ -1,11 +1,24 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type BST struct {
 	key   *int
 	left  *BST
 	right *BST
+}
+
+// height of a binary tree
+func height(node *BST) int {
+	if node == nil {
+		return 0
+	}
+	lh := height(node.left)
+	rh := height(node.right)
+	return 1 + int(math.Max(float64(lh), float64(rh)))
 }
 
 // insert a node in the binary search tree
